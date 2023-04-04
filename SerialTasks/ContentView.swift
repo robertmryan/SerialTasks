@@ -11,8 +11,11 @@ import os.log
 let log = OSLog(subsystem: "SerialTasks", category: .pointsOfInterest)
 
 struct ContentView: View {
+    @State var elapsed: TimeInterval = 0
+
     var body: some View {
         VStack {
+            Text("\(elapsed, specifier: "%0.1f")")
             Button("Run tasks") {
                 Task { await experiment() }
             }
@@ -20,13 +23,27 @@ struct ContentView: View {
         .padding()
     }
 
+    @MainActor
     func experiment() async {
         let taskManager = SerialTaskManager()
+
+        let start = CACurrentMediaTime()
+        let task = Task {
+            while true {
+                elapsed = CACurrentMediaTime() - start
+                try await Task.sleep(for: .seconds(0.1))
+            }
+        }
+
         await taskManager.add { await updateA() }
         await taskManager.add { await updateA() }
         await taskManager.add { await updateB() }
         await taskManager.add { await updateC() }
         await taskManager.add { await updateA() }
+
+        task.cancel()
+
+        print("Finished experiment")
     }
 
     func updateA() async {

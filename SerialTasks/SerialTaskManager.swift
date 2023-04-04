@@ -10,11 +10,13 @@ import Foundation
 actor SerialTaskManager {
     private var previousTask: Task<(), Error>?
 
-    func add(block: @Sendable @escaping () async throws -> Void) {
+    func add(block: @Sendable @escaping () async throws -> Void) async {
         previousTask = Task { [previousTask] in
             let _ = await previousTask?.result
 
             return try await block()
         }
+
+        try? await previousTask?.value
     }
 }
