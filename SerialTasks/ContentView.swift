@@ -50,7 +50,7 @@ struct ContentView: View {
         let id = OSSignpostID(log: log)
         os_signpost(.begin, log: log, name: #function, signpostID: id)
         print("updateA started")
-        try? await Task.sleep(nanoseconds: 1 * NSEC_PER_SEC)
+        try? await Task.sleep(for: .seconds(1))
         print("updateA ended")
         os_signpost(.end, log: log, name: #function, signpostID: id)
     }
@@ -59,7 +59,7 @@ struct ContentView: View {
         let id = OSSignpostID(log: log)
         os_signpost(.begin, log: log, name: #function, signpostID: id)
         print("updateB started")
-        try? await Task.sleep(nanoseconds: 1 * NSEC_PER_SEC)
+        try? await Task.sleep(for: .seconds(1))
         print("updateB ended")
         os_signpost(.end, log: log, name: #function, signpostID: id)
     }
@@ -68,7 +68,7 @@ struct ContentView: View {
         let id = OSSignpostID(log: log)
         os_signpost(.begin, log: log, name: #function, signpostID: id)
         print("updateC started")
-        try? await Task.sleep(nanoseconds: 1 * NSEC_PER_SEC)
+        try? await Task.sleep(for: .seconds(1))
         print("updateC ended")
         os_signpost(.end, log: log, name: #function, signpostID: id)
     }
